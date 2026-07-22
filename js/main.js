@@ -337,18 +337,17 @@ document.querySelectorAll('.tit_card').forEach((card) => {
   card.addEventListener('mousemove', (e) => {
     const rect = card.getBoundingClientRect();
     //카드안에서 마우스가 가로로 몇퍼센트 위치인지 계산
-    const px = (e.clinetX - rect.left) / rect.width;
-    const py = (e.clinetY - rect.top) / rect.height;
+    const px = (e.clientX - rect.left) / rect.width;
+    const py = (e.clientY - rect.top) / rect.height;
     //위아래 위치를 rotateX 각도로 바꾼다
     const rx = (py - 0.5) * -15;
     const ry = (px - 0.5) * 22;
 
     //계산한 각도를 안쪽 레이어 transform에 적용
-    layer.style.transform = `translateZ(0) rotateX('${rx}deg') rotateY('${ry}deg')`;
+    layer.style.transform = `translateZ(0) rotateX(${rx}deg) rotateY(${ry}deg)`;
 
     card.addEventListener('mouseleave', () => {
-      layer.style.transform = `translateZ(0) rotateX('0deg') rotateY('0deg')`;
-
+      layer.style.transform = `translateZ(0) rotateX(0deg) rotateY(0deg)`;
     })
   })
 });
@@ -363,25 +362,25 @@ processCards.forEach((card, index) => {
 
   //카드가 화면 중앙에 들어오는 순간 감지
   ScrollTrigger.create({
-    trigger:card,
-    start:'top center',
+    trigger: card,
+    start: 'top center',
     end: 'bottom center',
-    onEnter:()=>changeBe(imgUrl),
-    onEnterBack:()=>changeBe(imgUrl),
+    onEnter:()=>changeBg(imgUrl),
+    onEnterBack:()=>changeBg(imgUrl),
   });
 })
 
-//sticky 박스의 이미지를 바로 바꾸면 딱딱해서 살짝 줄였다가 다시 키우며 교체
-function changeBe(imgUrl){
-  if(!stickyBox) return;
+//sticky 박스의 이미지를 바로 바꾸면 딱닥해서 살짝 줄였다가 다시 키우며 교체
+function changeBg(imgUrl) {
+  if (!stickyBox) return;
 
-  gsap.to(stickyBox,{
-    opacity:0.72,
-    scale:0.98,
-    duration:0.2,
+  gsap.to(stickyBox, {
+    opacity: 0.72,
+    scale: 0.98,
+    duration: 0.2,
     onComplete: () => {
       stickyBox.style.backgroundImage = `url(${imgUrl})`;
-      gsap.to(stickyBox,{opacity:1,scale:1,duration:0.45});
+      gsap.to(stickyBox, { opacity: 1, scale: 1, duration: 0.45 });
     }
   })
 }
