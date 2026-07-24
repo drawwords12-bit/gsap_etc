@@ -458,13 +458,13 @@ function totalWidth() {
   return Math.max(0, track.scrollWidth - wrap.clientWidth);
 }
 
-//horizontal_section은 세로 스크롤을 가로 이동으로 바꿔 보여줌
+//horizontal_section은 세로 스크롤을 가로 이동으로 바궈 보여줌
 const horizontalTween = gsap.to('.track', {
   //트랙을 왼쪽으로 이동시켜 오른쪽 카드들이 보이게 한다
   x: () => -totalWidth(),
   ease: 'none',
   scrollTrigger: {
-    trigger: 'horizontal_section',
+    trigger: '.horizontal_section',
     start: 'top top',
     //실제 이동 거리보다 더 길게 잡아 앞뒤 여백 스크롤을 만든다
     end: () => '+=' + (totalWidth() + window.innerWidth * 1.45),
@@ -477,7 +477,7 @@ const horizontalTween = gsap.to('.track', {
     // 내려갈 때만 진행하고 역방향 상태는 scrub이 처리한다.
     toggleActions: 'play none none reset',
   }
-})
+});
 
 // 케이스 이미지가 모두 같은 방식으로 나오면 지루해서, 여러 등장 방식을 돌려쓴다.
 const imageMotionPresets = [
@@ -520,10 +520,11 @@ const imageMotionPresets = [
 ];
 const imageMotionOffset = Math.floor(Math.random() * imageMotionPresets.length);
 
+
 //각 case_panel 안에서 텍스트는 순서대로, 이미지는 서로 다른 방향에서 등장
 document.querySelectorAll('.case_panel').forEach((article, articleIndex) => {
-  const copyItems = article.querySelectorAll('.case_kicker,.case_copy h2,case_copy p,case_meta li');
-  const caseImages = article.querySelectorAll('.case_imgae');
+  const copyItems = article.querySelectorAll('.case_kicker,.case_copy h2,.case_copy p,.case_meta li');
+  const caseImages = article.querySelectorAll('.case_image');
   //텍스트 요소들을 아래에서 위로 순서대로 등장 시킨다
   gsap.fromTo(copyItems, {
     y: 36,
@@ -554,14 +555,14 @@ document.querySelectorAll('.case_panel').forEach((article, articleIndex) => {
     const preset = imageMotionPresets[presetIndex];
     // CSS에 이미 잡힌 기본 회전값을 읽어둔다.
     const baseRotate = parseFloat(gsap.getProperty(caseImage, 'rotate')) || 0;
-    gsap.fromTo(caseImage,{
-      x:preset.x,
-      y:preset.y,
-      opacity:0,
-      scale:preset.scale,
-      rotate:baseRotate +preset.rotate,
-      filter:preset.filter,
-    },{
+    gsap.fromTo(caseImage, {
+      x: preset.x,
+      y: preset.y,
+      opacity: 0,
+      scale: preset.scale,
+      rotate: baseRotate + preset.rotate,
+      filter: preset.filter,
+    }, {
       // 최종 x 위치는 원래 자리다.
       x: 0,
       // 최종 y 위치는 원래 자리다.
@@ -591,5 +592,6 @@ document.querySelectorAll('.case_panel').forEach((article, articleIndex) => {
         toggleActions: 'play none none reverse',
       },
     })
+
   })
 })
